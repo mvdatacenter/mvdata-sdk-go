@@ -1,0 +1,28 @@
+version: 2.1
+executors:
+  go-executor:
+    docker:
+      - image: cimg/go:tip
+    environment:
+      EACHMODULE_CONCURRENCY: 4
+jobs:
+  build:
+    executor: go-executor
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: |
+            if [ "$CIRCLE_OS_NAME" = "windows" ]; then choco install make; fi
+            (cd /tmp/; go get golang.org/x/lint/golint)
+      - run:
+          name: Run tests
+          command: make ci-test-no-generate
+workflows:
+  version: 2
+  build:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only: main
