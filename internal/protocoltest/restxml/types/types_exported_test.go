@@ -4,7 +4,7 @@ package types_test
 
 import (
 	"fmt"
-	"github.com/aws/aws-sdk-go-v2/internal/protocoltest/restxml/types"
+	"github.com/mvdatacenter/mvdata-sdk-go/internal/protocoltest/restxml/types"
 )
 
 func ExampleUnionPayload_outputUsage() {

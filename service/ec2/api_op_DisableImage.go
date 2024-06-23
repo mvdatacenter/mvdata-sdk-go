@@ -5,9 +5,9 @@ package ec2
 import (
 	"context"
 	"fmt"
-	awsmiddleware "github.com/aws/aws-sdk-go-v2/aws/middleware"
 	"github.com/aws/smithy-go/middleware"
 	smithyhttp "github.com/aws/smithy-go/transport/http"
+	awsmiddleware "github.com/mvdatacenter/mvdata-sdk-go/mvdata/middleware"
 )
 
 // Sets the AMI state to disabled and removes all launch permissions from the AMI.

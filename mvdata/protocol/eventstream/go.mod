@@ -1,7 +1,7 @@
-module github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream
+module github.com/mvdatacenter/mvdata-sdk-go/mvdata/protocol/eventstream
 
 go 1.20
 
 require github.com/aws/smithy-go v1.20.2
 
-replace github.com/aws/aws-sdk-go-v2 => ../../../
+replace github.com/mvdatacenter/mvdata-sdk-go => ../../../

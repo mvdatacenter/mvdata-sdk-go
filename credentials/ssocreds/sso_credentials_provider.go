@@ -4,9 +4,9 @@ import (
 	"context"
 	"time"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
-	"github.com/aws/aws-sdk-go-v2/internal/sdk"
-	"github.com/aws/aws-sdk-go-v2/service/sso"
+	"github.com/mvdatacenter/mvdata-sdk-go/internal/sdk"
+	"github.com/mvdatacenter/mvdata-sdk-go/mvdata"
+	"github.com/mvdatacenter/mvdata-sdk-go/service/sso"
 )
 
 // ProviderName is the name of the provider used to specify the source of

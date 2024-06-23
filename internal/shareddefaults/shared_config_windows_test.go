@@ -8,8 +8,8 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/aws/aws-sdk-go-v2/internal/awstesting"
-	"github.com/aws/aws-sdk-go-v2/internal/shareddefaults"
+	"github.com/mvdatacenter/mvdata-sdk-go/internal/awstesting"
+	"github.com/mvdatacenter/mvdata-sdk-go/internal/shareddefaults"
 )
 
 func TestSharedCredsFilename(t *testing.T) {

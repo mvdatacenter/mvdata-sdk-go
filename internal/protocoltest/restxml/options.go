@@ -4,13 +4,13 @@ package restxml
 
 import (
 	"context"
-	"github.com/aws/aws-sdk-go-v2/aws"
-	awsmiddleware "github.com/aws/aws-sdk-go-v2/aws/middleware"
-	internalauthsmithy "github.com/aws/aws-sdk-go-v2/internal/auth/smithy"
 	smithyauth "github.com/aws/smithy-go/auth"
 	"github.com/aws/smithy-go/logging"
 	"github.com/aws/smithy-go/middleware"
 	smithyhttp "github.com/aws/smithy-go/transport/http"
+	internalauthsmithy "github.com/mvdatacenter/mvdata-sdk-go/internal/auth/smithy"
+	"github.com/mvdatacenter/mvdata-sdk-go/mvdata"
+	awsmiddleware "github.com/mvdatacenter/mvdata-sdk-go/mvdata/middleware"
 	"net/http"
 )
 

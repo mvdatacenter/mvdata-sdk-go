@@ -2,10 +2,10 @@ package main
 
 import (
 	"context"
-	"github.com/aws/aws-sdk-go-v2/aws"
-	"github.com/aws/aws-sdk-go-v2/config"
-	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
-	"github.com/aws/aws-sdk-go-v2/service/dynamodb/types"
+	"github.com/mvdatacenter/mvdata-sdk-go/config"
+	"github.com/mvdatacenter/mvdata-sdk-go/mvdata"
+	"github.com/mvdatacenter/mvdata-sdk-go/service/dynamodb"
+	"github.com/mvdatacenter/mvdata-sdk-go/service/dynamodb/types"
 	"log"
 )
 

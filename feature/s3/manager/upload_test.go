@@ -16,14 +16,14 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
-	"github.com/aws/aws-sdk-go-v2/aws/retry"
-	"github.com/aws/aws-sdk-go-v2/feature/s3/manager"
-	s3testing "github.com/aws/aws-sdk-go-v2/feature/s3/manager/internal/testing"
-	"github.com/aws/aws-sdk-go-v2/internal/awstesting"
-	"github.com/aws/aws-sdk-go-v2/internal/sdk"
-	"github.com/aws/aws-sdk-go-v2/service/s3"
-	"github.com/aws/aws-sdk-go-v2/service/s3/types"
+	"github.com/mvdatacenter/mvdata-sdk-go/feature/s3/manager"
+	s3testing "github.com/mvdatacenter/mvdata-sdk-go/feature/s3/manager/internal/testing"
+	"github.com/mvdatacenter/mvdata-sdk-go/internal/awstesting"
+	"github.com/mvdatacenter/mvdata-sdk-go/internal/sdk"
+	"github.com/mvdatacenter/mvdata-sdk-go/mvdata"
+	"github.com/mvdatacenter/mvdata-sdk-go/mvdata/retry"
+	"github.com/mvdatacenter/mvdata-sdk-go/service/s3"
+	"github.com/mvdatacenter/mvdata-sdk-go/service/s3/types"
 )
 
 // getReaderLength discards the bytes from reader and returns the length

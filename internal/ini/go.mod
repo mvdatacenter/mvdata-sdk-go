@@ -1,5 +1,5 @@
-module github.com/aws/aws-sdk-go-v2/internal/ini
+module github.com/mvdatacenter/mvdata-sdk-go/internal/ini
 
 go 1.20
 
-replace github.com/aws/aws-sdk-go-v2 => ../../
+replace github.com/mvdatacenter/mvdata-sdk-go => ../../

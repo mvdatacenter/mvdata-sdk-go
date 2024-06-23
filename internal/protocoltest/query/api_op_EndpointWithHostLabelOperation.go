@@ -5,10 +5,10 @@ package query
 import (
 	"context"
 	"fmt"
-	awsmiddleware "github.com/aws/aws-sdk-go-v2/aws/middleware"
 	smithy "github.com/aws/smithy-go"
 	"github.com/aws/smithy-go/middleware"
 	smithyhttp "github.com/aws/smithy-go/transport/http"
+	awsmiddleware "github.com/mvdatacenter/mvdata-sdk-go/mvdata/middleware"
 	"strings"
 )
 

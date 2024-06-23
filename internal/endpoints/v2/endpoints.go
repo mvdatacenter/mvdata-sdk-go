@@ -6,7 +6,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/mvdatacenter/mvdata-sdk-go/mvdata"
 )
 
 // DefaultKey is a compound map key of a variant and other values.

@@ -11,8 +11,8 @@ import (
 	"runtime"
 	"time"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
-	"github.com/aws/aws-sdk-go-v2/internal/sdkio"
+	"github.com/mvdatacenter/mvdata-sdk-go/internal/sdkio"
+	"github.com/mvdatacenter/mvdata-sdk-go/mvdata"
 )
 
 const (

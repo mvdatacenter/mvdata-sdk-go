@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/aws/aws-sdk-go-v2/internal/awsutil"
+	"github.com/mvdatacenter/mvdata-sdk-go/internal/awsutil"
 )
 
 func ExampleCopy() {

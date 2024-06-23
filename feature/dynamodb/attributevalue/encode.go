@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/aws/aws-sdk-go-v2/service/dynamodb/types"
+	"github.com/mvdatacenter/mvdata-sdk-go/service/dynamodb/types"
 )
 
 // An UnixTime provides aliasing of time.Time into a type that when marshaled

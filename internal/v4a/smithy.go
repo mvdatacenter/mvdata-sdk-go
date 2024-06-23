@@ -5,14 +5,14 @@ import (
 	"fmt"
 	"time"
 
-	internalcontext "github.com/aws/aws-sdk-go-v2/internal/context"
+	internalcontext "github.com/mvdatacenter/mvdata-sdk-go/internal/context"
 
-	v4 "github.com/aws/aws-sdk-go-v2/aws/signer/v4"
-	"github.com/aws/aws-sdk-go-v2/internal/sdk"
 	"github.com/aws/smithy-go"
 	"github.com/aws/smithy-go/auth"
 	"github.com/aws/smithy-go/logging"
 	smithyhttp "github.com/aws/smithy-go/transport/http"
+	"github.com/mvdatacenter/mvdata-sdk-go/internal/sdk"
+	v4 "github.com/mvdatacenter/mvdata-sdk-go/mvdata/signer/v4"
 )
 
 // CredentialsAdapter adapts v4a.Credentials to smithy auth.Identity.

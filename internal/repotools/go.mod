@@ -1,4 +1,4 @@
-module github.com/aws/aws-sdk-go-v2/internal/repotools
+module github.com/mvdatacenter/mvdata-sdk-go/internal/repotools
 
 go 1.20
 

@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/mvdatacenter/mvdata-sdk-go/mvdata"
 )
 
 func TestConfigV1(t *testing.T) {

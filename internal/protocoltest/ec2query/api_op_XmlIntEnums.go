@@ -5,10 +5,10 @@ package ec2query
 import (
 	"context"
 	"fmt"
-	awsmiddleware "github.com/aws/aws-sdk-go-v2/aws/middleware"
-	"github.com/aws/aws-sdk-go-v2/internal/protocoltest/ec2query/types"
 	"github.com/aws/smithy-go/middleware"
 	smithyhttp "github.com/aws/smithy-go/transport/http"
+	"github.com/mvdatacenter/mvdata-sdk-go/internal/protocoltest/ec2query/types"
+	awsmiddleware "github.com/mvdatacenter/mvdata-sdk-go/mvdata/middleware"
 )
 
 // This example serializes intEnums as top level properties, in lists, sets, and

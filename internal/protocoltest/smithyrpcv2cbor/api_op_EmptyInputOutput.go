@@ -5,9 +5,9 @@ package smithyrpcv2cbor
 import (
 	"context"
 	"fmt"
-	awsmiddleware "github.com/aws/aws-sdk-go-v2/aws/middleware"
 	"github.com/aws/smithy-go/middleware"
 	smithyhttp "github.com/aws/smithy-go/transport/http"
+	awsmiddleware "github.com/mvdatacenter/mvdata-sdk-go/mvdata/middleware"
 )
 
 func (c *Client) EmptyInputOutput(ctx context.Context, params *EmptyInputOutputInput, optFns ...func(*Options)) (*EmptyInputOutputOutput, error) {

@@ -5,10 +5,10 @@ package jsonrpc
 import (
 	"context"
 	"fmt"
-	awsmiddleware "github.com/aws/aws-sdk-go-v2/aws/middleware"
-	"github.com/aws/aws-sdk-go-v2/internal/protocoltest/jsonrpc/document"
 	"github.com/aws/smithy-go/middleware"
 	smithyhttp "github.com/aws/smithy-go/transport/http"
+	"github.com/mvdatacenter/mvdata-sdk-go/internal/protocoltest/jsonrpc/document"
+	awsmiddleware "github.com/mvdatacenter/mvdata-sdk-go/mvdata/middleware"
 )
 
 // This example serializes an inline document as part of the payload.

@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/aws/aws-sdk-go-v2/service/dynamodb/types"
+	"github.com/mvdatacenter/mvdata-sdk-go/service/dynamodb/types"
 )
 
 // condErrorMode will help with error cases and checking error types

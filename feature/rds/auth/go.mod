@@ -1,9 +1,9 @@
-module github.com/aws/aws-sdk-go-v2/feature/rds/auth
+module github.com/mvdatacenter/mvdata-sdk-go/feature/rds/auth
 
 go 1.20
 
-require github.com/aws/aws-sdk-go-v2 v1.30.0
+require github.com/mvdatacenter/mvdata-sdk-go v1.30.0
 
 require github.com/aws/smithy-go v1.20.2 // indirect
 
-replace github.com/aws/aws-sdk-go-v2 => ../../../
+replace github.com/mvdatacenter/mvdata-sdk-go => ../../../

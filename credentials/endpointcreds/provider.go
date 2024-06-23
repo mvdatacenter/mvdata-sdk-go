@@ -38,9 +38,9 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
-	"github.com/aws/aws-sdk-go-v2/credentials/endpointcreds/internal/client"
 	"github.com/aws/smithy-go/middleware"
+	"github.com/mvdatacenter/mvdata-sdk-go/credentials/endpointcreds/internal/client"
+	"github.com/mvdatacenter/mvdata-sdk-go/mvdata"
 )
 
 // ProviderName is the name of the credentials provider.

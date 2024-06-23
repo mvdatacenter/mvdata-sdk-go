@@ -7,7 +7,7 @@ import (
 	"net/url"
 	"strings"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/mvdatacenter/mvdata-sdk-go/mvdata"
 )
 
 // IsErrorRetryable provides the interface of an implementation to determine if

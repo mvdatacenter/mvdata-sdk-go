@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/mvdatacenter/mvdata-sdk-go/mvdata"
 )
 
 // AddWithErrorCodes returns a Retryer with additional error codes considered

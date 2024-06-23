@@ -13,9 +13,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
-	"github.com/aws/aws-sdk-go-v2/internal/v4a/internal/crypto"
 	"github.com/aws/smithy-go/logging"
+	"github.com/mvdatacenter/mvdata-sdk-go/internal/v4a/internal/crypto"
+	"github.com/mvdatacenter/mvdata-sdk-go/mvdata"
 )
 
 const (

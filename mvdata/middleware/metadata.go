@@ -3,7 +3,7 @@ package middleware
 import (
 	"context"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/mvdatacenter/mvdata-sdk-go/mvdata"
 
 	"github.com/aws/smithy-go/middleware"
 )

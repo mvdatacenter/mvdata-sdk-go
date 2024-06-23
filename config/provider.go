@@ -5,16 +5,16 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
-	"github.com/aws/aws-sdk-go-v2/credentials/ec2rolecreds"
-	"github.com/aws/aws-sdk-go-v2/credentials/endpointcreds"
-	"github.com/aws/aws-sdk-go-v2/credentials/processcreds"
-	"github.com/aws/aws-sdk-go-v2/credentials/ssocreds"
-	"github.com/aws/aws-sdk-go-v2/credentials/stscreds"
-	"github.com/aws/aws-sdk-go-v2/feature/ec2/imds"
 	smithybearer "github.com/aws/smithy-go/auth/bearer"
 	"github.com/aws/smithy-go/logging"
 	"github.com/aws/smithy-go/middleware"
+	"github.com/mvdatacenter/mvdata-sdk-go/credentials/ec2rolecreds"
+	"github.com/mvdatacenter/mvdata-sdk-go/credentials/endpointcreds"
+	"github.com/mvdatacenter/mvdata-sdk-go/credentials/processcreds"
+	"github.com/mvdatacenter/mvdata-sdk-go/credentials/ssocreds"
+	"github.com/mvdatacenter/mvdata-sdk-go/credentials/stscreds"
+	"github.com/mvdatacenter/mvdata-sdk-go/feature/ec2/imds"
+	"github.com/mvdatacenter/mvdata-sdk-go/mvdata"
 )
 
 // sharedConfigProfileProvider provides access to the shared config profile

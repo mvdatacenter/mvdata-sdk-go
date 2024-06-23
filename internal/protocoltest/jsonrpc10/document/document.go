@@ -3,7 +3,7 @@
 package document
 
 import (
-	internaldocument "github.com/aws/aws-sdk-go-v2/internal/protocoltest/jsonrpc10/internal/document"
+	internaldocument "github.com/mvdatacenter/mvdata-sdk-go/internal/protocoltest/jsonrpc10/internal/document"
 )
 
 // Interface defines a document which is a protocol-agnostic type which supports a

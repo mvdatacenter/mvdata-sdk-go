@@ -6,9 +6,9 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/aws/aws-sdk-go-v2/aws/middleware/private/metrics"
-	"github.com/aws/aws-sdk-go-v2/aws/middleware/private/metrics/testutils"
 	"github.com/aws/smithy-go/middleware"
+	"github.com/mvdatacenter/mvdata-sdk-go/mvdata/middleware/private/metrics"
+	"github.com/mvdatacenter/mvdata-sdk-go/mvdata/middleware/private/metrics/testutils"
 )
 
 type TestResult struct {

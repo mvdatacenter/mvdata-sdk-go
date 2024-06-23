@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
-	"github.com/aws/aws-sdk-go-v2/internal/sdk"
+	"github.com/mvdatacenter/mvdata-sdk-go/internal/sdk"
+	"github.com/mvdatacenter/mvdata-sdk-go/mvdata"
 )
 
 const (

@@ -8,15 +8,15 @@ import (
 	"testing"
 	"time"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
-	"github.com/aws/aws-sdk-go-v2/aws/retry"
+	"github.com/mvdatacenter/mvdata-sdk-go/mvdata"
+	"github.com/mvdatacenter/mvdata-sdk-go/mvdata/retry"
 
-	"github.com/aws/aws-sdk-go-v2/aws/middleware"
-	internalcontext "github.com/aws/aws-sdk-go-v2/internal/context"
-	internalmiddleware "github.com/aws/aws-sdk-go-v2/internal/middleware"
-	"github.com/aws/aws-sdk-go-v2/internal/sdk"
 	smithymiddleware "github.com/aws/smithy-go/middleware"
 	smithyhttp "github.com/aws/smithy-go/transport/http"
+	internalcontext "github.com/mvdatacenter/mvdata-sdk-go/internal/context"
+	internalmiddleware "github.com/mvdatacenter/mvdata-sdk-go/internal/middleware"
+	"github.com/mvdatacenter/mvdata-sdk-go/internal/sdk"
+	"github.com/mvdatacenter/mvdata-sdk-go/mvdata/middleware"
 )
 
 type httpClient interface {

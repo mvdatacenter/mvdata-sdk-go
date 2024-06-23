@@ -6,13 +6,13 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
-	"github.com/aws/aws-sdk-go-v2/aws/middleware"
-	"github.com/aws/aws-sdk-go-v2/aws/retry"
-	awshttp "github.com/aws/aws-sdk-go-v2/aws/transport/http"
 	"github.com/aws/smithy-go"
 	smithymiddleware "github.com/aws/smithy-go/middleware"
 	smithyhttp "github.com/aws/smithy-go/transport/http"
+	"github.com/mvdatacenter/mvdata-sdk-go/mvdata"
+	"github.com/mvdatacenter/mvdata-sdk-go/mvdata/middleware"
+	"github.com/mvdatacenter/mvdata-sdk-go/mvdata/retry"
+	awshttp "github.com/mvdatacenter/mvdata-sdk-go/mvdata/transport/http"
 )
 
 // ServiceID is the client identifer

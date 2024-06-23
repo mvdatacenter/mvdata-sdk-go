@@ -7,9 +7,9 @@ import (
 	"context"
 	"testing"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
-	"github.com/aws/aws-sdk-go-v2/feature/s3/manager"
-	"github.com/aws/aws-sdk-go-v2/service/s3"
+	"github.com/mvdatacenter/mvdata-sdk-go/feature/s3/manager"
+	"github.com/mvdatacenter/mvdata-sdk-go/mvdata"
+	"github.com/mvdatacenter/mvdata-sdk-go/service/s3"
 )
 
 func TestInteg_GetBucketRegion(t *testing.T) {

@@ -4,7 +4,7 @@ import (
 	"context"
 	"os"
 
-	"github.com/mvdatacenter/mvdata-sdk-go/aws"
+	"github.com/mvdatacenter/mvdata-sdk-go/mvdata"
 )
 
 // defaultAWSConfigResolvers are a slice of functions that will resolve external

@@ -3,7 +3,7 @@ package mock
 import (
 	"context"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/mvdatacenter/mvdata-sdk-go/mvdata"
 )
 
 // LoadDefaultConfig is a mock for config.LoadDefaultConfig

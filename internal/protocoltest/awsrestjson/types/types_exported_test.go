@@ -4,7 +4,7 @@ package types_test
 
 import (
 	"fmt"
-	"github.com/aws/aws-sdk-go-v2/internal/protocoltest/awsrestjson/types"
+	"github.com/mvdatacenter/mvdata-sdk-go/internal/protocoltest/awsrestjson/types"
 	"time"
 )
 

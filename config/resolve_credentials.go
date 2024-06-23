@@ -9,7 +9,6 @@ import (
 	"os"
 	"time"
 
-	"github.com/mvdatacenter/mvdata-sdk-go/aws"
 	"github.com/mvdatacenter/mvdata-sdk-go/credentials"
 	"github.com/mvdatacenter/mvdata-sdk-go/credentials/ec2rolecreds"
 	"github.com/mvdatacenter/mvdata-sdk-go/credentials/endpointcreds"
@@ -17,6 +16,7 @@ import (
 	"github.com/mvdatacenter/mvdata-sdk-go/credentials/ssocreds"
 	"github.com/mvdatacenter/mvdata-sdk-go/credentials/stscreds"
 	"github.com/mvdatacenter/mvdata-sdk-go/feature/ec2/imds"
+	"github.com/mvdatacenter/mvdata-sdk-go/mvdata"
 	"github.com/mvdatacenter/mvdata-sdk-go/service/sso"
 	"github.com/mvdatacenter/mvdata-sdk-go/service/ssooidc"
 	"github.com/mvdatacenter/mvdata-sdk-go/service/sts"

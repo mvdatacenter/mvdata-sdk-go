@@ -4,8 +4,8 @@ import (
 	"context"
 	"crypto/sha256"
 	"encoding/hex"
-	"github.com/aws/aws-sdk-go-v2/aws"
-	v4Internal "github.com/aws/aws-sdk-go-v2/aws/signer/internal/v4"
+	"github.com/mvdatacenter/mvdata-sdk-go/mvdata"
+	v4Internal "github.com/mvdatacenter/mvdata-sdk-go/mvdata/signer/internal/v4"
 	"strings"
 	"time"
 )

@@ -5,9 +5,9 @@ package jsonrpc
 import (
 	"context"
 	"fmt"
-	awsmiddleware "github.com/aws/aws-sdk-go-v2/aws/middleware"
 	"github.com/aws/smithy-go/middleware"
 	smithyhttp "github.com/aws/smithy-go/transport/http"
+	awsmiddleware "github.com/mvdatacenter/mvdata-sdk-go/mvdata/middleware"
 )
 
 func (c *Client) EmptyOperation(ctx context.Context, params *EmptyOperationInput, optFns ...func(*Options)) (*EmptyOperationOutput, error) {

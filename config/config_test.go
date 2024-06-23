@@ -7,8 +7,8 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/mvdatacenter/mvdata-sdk-go/aws"
 	"github.com/mvdatacenter/mvdata-sdk-go/credentials"
+	"github.com/mvdatacenter/mvdata-sdk-go/mvdata"
 )
 
 func TestConfigs_SharedConfigOptions(t *testing.T) {

@@ -11,13 +11,13 @@ import (
 	"testing"
 	"time"
 
-	"github.com/aws/aws-sdk-go-v2/aws/middleware/private/metrics/testutils"
-	internalcontext "github.com/aws/aws-sdk-go-v2/internal/context"
+	internalcontext "github.com/mvdatacenter/mvdata-sdk-go/internal/context"
+	"github.com/mvdatacenter/mvdata-sdk-go/mvdata/middleware/private/metrics/testutils"
 
-	"github.com/aws/aws-sdk-go-v2/aws/ratelimit"
-	"github.com/aws/aws-sdk-go-v2/internal/sdk"
 	"github.com/aws/smithy-go/middleware"
 	smithyhttp "github.com/aws/smithy-go/transport/http"
+	"github.com/mvdatacenter/mvdata-sdk-go/internal/sdk"
+	"github.com/mvdatacenter/mvdata-sdk-go/mvdata/ratelimit"
 )
 
 func TestMetricsHeaderMiddleware(t *testing.T) {

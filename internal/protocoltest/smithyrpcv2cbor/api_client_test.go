@@ -4,9 +4,9 @@ package smithyrpcv2cbor
 
 import (
 	"context"
-	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/smithy-go/middleware"
 	smithyhttp "github.com/aws/smithy-go/transport/http"
+	"github.com/mvdatacenter/mvdata-sdk-go/mvdata"
 	"io/ioutil"
 	"net/http"
 	"strings"

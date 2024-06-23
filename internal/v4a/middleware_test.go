@@ -10,11 +10,11 @@ import (
 	"testing"
 	"time"
 
-	awsmiddleware "github.com/aws/aws-sdk-go-v2/aws/middleware"
-	v4 "github.com/aws/aws-sdk-go-v2/aws/signer/v4"
 	"github.com/aws/smithy-go/logging"
 	"github.com/aws/smithy-go/middleware"
 	smithyhttp "github.com/aws/smithy-go/transport/http"
+	awsmiddleware "github.com/mvdatacenter/mvdata-sdk-go/mvdata/middleware"
+	v4 "github.com/mvdatacenter/mvdata-sdk-go/mvdata/signer/v4"
 )
 
 type stubCredentialsProviderFunc func(context.Context) (Credentials, error)

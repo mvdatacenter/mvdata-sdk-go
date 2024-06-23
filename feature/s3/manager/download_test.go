@@ -15,12 +15,12 @@ import (
 	"testing"
 	"time"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
-	"github.com/aws/aws-sdk-go-v2/feature/s3/manager"
-	managertesting "github.com/aws/aws-sdk-go-v2/feature/s3/manager/internal/testing"
-	"github.com/aws/aws-sdk-go-v2/internal/awstesting"
-	"github.com/aws/aws-sdk-go-v2/internal/sdkio"
-	"github.com/aws/aws-sdk-go-v2/service/s3"
+	"github.com/mvdatacenter/mvdata-sdk-go/feature/s3/manager"
+	managertesting "github.com/mvdatacenter/mvdata-sdk-go/feature/s3/manager/internal/testing"
+	"github.com/mvdatacenter/mvdata-sdk-go/internal/awstesting"
+	"github.com/mvdatacenter/mvdata-sdk-go/internal/sdkio"
+	"github.com/mvdatacenter/mvdata-sdk-go/mvdata"
+	"github.com/mvdatacenter/mvdata-sdk-go/service/s3"
 )
 
 type downloadCaptureClient struct {

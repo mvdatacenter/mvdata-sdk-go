@@ -4,13 +4,13 @@ package awsrestjson
 
 import (
 	"context"
-	"github.com/aws/aws-sdk-go-v2/aws"
-	protocoltesthttp "github.com/aws/aws-sdk-go-v2/internal/protocoltest"
 	"github.com/aws/smithy-go/middleware"
 	smithyprivateprotocol "github.com/aws/smithy-go/private/protocol"
 	"github.com/aws/smithy-go/ptr"
 	smithyrand "github.com/aws/smithy-go/rand"
 	smithytesting "github.com/aws/smithy-go/testing"
+	protocoltesthttp "github.com/mvdatacenter/mvdata-sdk-go/internal/protocoltest"
+	"github.com/mvdatacenter/mvdata-sdk-go/mvdata"
 	"io"
 	"net/http"
 	"net/url"

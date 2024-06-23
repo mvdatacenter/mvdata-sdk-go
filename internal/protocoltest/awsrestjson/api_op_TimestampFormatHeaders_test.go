@@ -5,8 +5,6 @@ package awsrestjson
 import (
 	"bytes"
 	"context"
-	"github.com/aws/aws-sdk-go-v2/aws"
-	protocoltesthttp "github.com/aws/aws-sdk-go-v2/internal/protocoltest"
 	"github.com/aws/smithy-go/middleware"
 	smithyprivateprotocol "github.com/aws/smithy-go/private/protocol"
 	"github.com/aws/smithy-go/ptr"
@@ -14,6 +12,8 @@ import (
 	smithytesting "github.com/aws/smithy-go/testing"
 	smithytime "github.com/aws/smithy-go/time"
 	smithyhttp "github.com/aws/smithy-go/transport/http"
+	protocoltesthttp "github.com/mvdatacenter/mvdata-sdk-go/internal/protocoltest"
+	"github.com/mvdatacenter/mvdata-sdk-go/mvdata"
 	"io"
 	"io/ioutil"
 	"net/http"

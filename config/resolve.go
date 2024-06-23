@@ -9,10 +9,10 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
-	awshttp "github.com/aws/aws-sdk-go-v2/aws/transport/http"
-	"github.com/aws/aws-sdk-go-v2/feature/ec2/imds"
 	"github.com/aws/smithy-go/logging"
+	"github.com/mvdatacenter/mvdata-sdk-go/feature/ec2/imds"
+	"github.com/mvdatacenter/mvdata-sdk-go/mvdata"
+	awshttp "github.com/mvdatacenter/mvdata-sdk-go/mvdata/transport/http"
 )
 
 // resolveDefaultAWSConfig will write default configuration values into the cfg

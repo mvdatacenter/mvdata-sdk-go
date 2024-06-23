@@ -5,8 +5,8 @@ import (
 	"sync/atomic"
 	"time"
 
-	internalcontext "github.com/aws/aws-sdk-go-v2/internal/context"
 	"github.com/aws/smithy-go/middleware"
+	internalcontext "github.com/mvdatacenter/mvdata-sdk-go/internal/context"
 )
 
 // AddTimeOffsetMiddleware sets a value representing clock skew on the request context.

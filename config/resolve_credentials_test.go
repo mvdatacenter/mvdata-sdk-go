@@ -18,9 +18,9 @@ import (
 	"github.com/aws/smithy-go"
 	"github.com/aws/smithy-go/middleware"
 	smithytime "github.com/aws/smithy-go/time"
-	"github.com/mvdatacenter/mvdata-sdk-go/aws"
 	"github.com/mvdatacenter/mvdata-sdk-go/feature/ec2/imds"
 	"github.com/mvdatacenter/mvdata-sdk-go/internal/awstesting"
+	"github.com/mvdatacenter/mvdata-sdk-go/mvdata"
 	"github.com/mvdatacenter/mvdata-sdk-go/service/sso"
 	"github.com/mvdatacenter/mvdata-sdk-go/service/sts"
 )

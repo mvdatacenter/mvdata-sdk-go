@@ -6,7 +6,7 @@ import (
 	"crypto/rsa"
 	"math/big"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/mvdatacenter/mvdata-sdk-go/mvdata"
 )
 
 func init() {

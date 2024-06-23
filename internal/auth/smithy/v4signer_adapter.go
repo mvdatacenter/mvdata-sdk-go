@@ -4,13 +4,13 @@ import (
 	"context"
 	"fmt"
 
-	v4 "github.com/aws/aws-sdk-go-v2/aws/signer/v4"
-	internalcontext "github.com/aws/aws-sdk-go-v2/internal/context"
-	"github.com/aws/aws-sdk-go-v2/internal/sdk"
 	"github.com/aws/smithy-go"
 	"github.com/aws/smithy-go/auth"
 	"github.com/aws/smithy-go/logging"
 	smithyhttp "github.com/aws/smithy-go/transport/http"
+	internalcontext "github.com/mvdatacenter/mvdata-sdk-go/internal/context"
+	"github.com/mvdatacenter/mvdata-sdk-go/internal/sdk"
+	v4 "github.com/mvdatacenter/mvdata-sdk-go/mvdata/signer/v4"
 )
 
 // V4SignerAdapter adapts v4.HTTPSigner to smithy http.Signer.

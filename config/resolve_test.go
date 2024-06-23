@@ -11,13 +11,13 @@ import (
 	"strconv"
 	"testing"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
-	awshttp "github.com/aws/aws-sdk-go-v2/aws/transport/http"
-	"github.com/aws/aws-sdk-go-v2/credentials"
-	"github.com/aws/aws-sdk-go-v2/feature/ec2/imds"
-	"github.com/aws/aws-sdk-go-v2/internal/awstesting"
-	"github.com/aws/aws-sdk-go-v2/internal/awstesting/unit"
 	"github.com/aws/smithy-go/logging"
+	"github.com/mvdatacenter/mvdata-sdk-go/credentials"
+	"github.com/mvdatacenter/mvdata-sdk-go/feature/ec2/imds"
+	"github.com/mvdatacenter/mvdata-sdk-go/internal/awstesting"
+	"github.com/mvdatacenter/mvdata-sdk-go/internal/awstesting/unit"
+	"github.com/mvdatacenter/mvdata-sdk-go/mvdata"
+	awshttp "github.com/mvdatacenter/mvdata-sdk-go/mvdata/transport/http"
 )
 
 func TestResolveCustomCABundle(t *testing.T) {

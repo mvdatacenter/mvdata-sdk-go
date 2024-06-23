@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/aws/aws-sdk-go-v2/internal/awsutil"
+	"github.com/mvdatacenter/mvdata-sdk-go/internal/awsutil"
 )
 
 type Struct struct {

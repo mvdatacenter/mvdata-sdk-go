@@ -10,11 +10,11 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
-	"github.com/aws/aws-sdk-go-v2/aws/middleware"
-	"github.com/aws/aws-sdk-go-v2/internal/awsutil"
-	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/aws/smithy-go/logging"
+	"github.com/mvdatacenter/mvdata-sdk-go/internal/awsutil"
+	"github.com/mvdatacenter/mvdata-sdk-go/mvdata"
+	"github.com/mvdatacenter/mvdata-sdk-go/mvdata/middleware"
+	"github.com/mvdatacenter/mvdata-sdk-go/service/s3"
 )
 
 const userAgentKey = "s3-transfer"

@@ -6,7 +6,7 @@ import (
 	"reflect"
 	"time"
 
-	"github.com/aws/aws-sdk-go-v2/internal/sdk"
+	"github.com/mvdatacenter/mvdata-sdk-go/internal/sdk"
 )
 
 // AnonymousCredentials provides a sentinel CredentialsProvider that should be

@@ -3,7 +3,7 @@ package retry
 import (
 	"errors"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/mvdatacenter/mvdata-sdk-go/mvdata"
 )
 
 // IsErrorThrottle provides the interface of an implementation to determine if

@@ -5,10 +5,10 @@ package ec2
 import (
 	"context"
 	"fmt"
-	awsmiddleware "github.com/aws/aws-sdk-go-v2/aws/middleware"
-	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/aws/smithy-go/middleware"
 	smithyhttp "github.com/aws/smithy-go/transport/http"
+	awsmiddleware "github.com/mvdatacenter/mvdata-sdk-go/mvdata/middleware"
+	"github.com/mvdatacenter/mvdata-sdk-go/service/ec2/types"
 )
 
 // Modifies the Capacity Reservation settings for a stopped instance. Use this

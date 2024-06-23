@@ -1,5 +1,5 @@
-module github.com/aws/aws-sdk-go-v2/internal/codegen/defaults
+module github.com/mvdatacenter/mvdata-sdk-go/internal/codegen/defaults
 
 go 1.20
 
-replace github.com/aws/aws-sdk-go-v2 => ../../
+replace github.com/mvdatacenter/mvdata-sdk-go => ../../

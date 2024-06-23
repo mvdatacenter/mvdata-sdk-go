@@ -14,10 +14,10 @@ import (
 
 	"github.com/aws/smithy-go/logging"
 	smithyrequestcompression "github.com/aws/smithy-go/private/requestcompression"
-	"github.com/mvdatacenter/mvdata-sdk-go/aws"
 	"github.com/mvdatacenter/mvdata-sdk-go/feature/ec2/imds"
 	"github.com/mvdatacenter/mvdata-sdk-go/internal/ini"
 	"github.com/mvdatacenter/mvdata-sdk-go/internal/shareddefaults"
+	"github.com/mvdatacenter/mvdata-sdk-go/mvdata"
 )
 
 const (

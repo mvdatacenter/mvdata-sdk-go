@@ -23,7 +23,7 @@
 //	    "fmt"
 //	    "log"
 //
-//	    "github.com/mvdatacenter/mvdata-sdk-go/aws"
+//	    "github.com/mvdatacenter/mvdata-sdk-go/mvdata"
 //	    "github.com/mvdatacenter/mvdata-sdk-go/config"
 //	    "github.com/mvdatacenter/mvdata-sdk-go/service/dynamodb"
 //	)

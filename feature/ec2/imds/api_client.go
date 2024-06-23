@@ -9,14 +9,14 @@ import (
 	"strings"
 	"time"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
-	"github.com/aws/aws-sdk-go-v2/aws/retry"
-	awshttp "github.com/aws/aws-sdk-go-v2/aws/transport/http"
-	internalconfig "github.com/aws/aws-sdk-go-v2/feature/ec2/imds/internal/config"
 	"github.com/aws/smithy-go"
 	"github.com/aws/smithy-go/logging"
 	"github.com/aws/smithy-go/middleware"
 	smithyhttp "github.com/aws/smithy-go/transport/http"
+	internalconfig "github.com/mvdatacenter/mvdata-sdk-go/feature/ec2/imds/internal/config"
+	"github.com/mvdatacenter/mvdata-sdk-go/mvdata"
+	"github.com/mvdatacenter/mvdata-sdk-go/mvdata/retry"
+	awshttp "github.com/mvdatacenter/mvdata-sdk-go/mvdata/transport/http"
 )
 
 // ServiceID provides the unique name of this API client

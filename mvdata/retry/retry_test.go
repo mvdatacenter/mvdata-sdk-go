@@ -3,7 +3,7 @@ package retry
 import (
 	"testing"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/mvdatacenter/mvdata-sdk-go/mvdata"
 )
 
 var _ aws.RetryerV2 = (*withIsErrorRetryable)(nil)

@@ -4,8 +4,8 @@ import (
 	"context"
 	"os"
 
-	"github.com/mvdatacenter/mvdata-sdk-go/aws"
 	"github.com/mvdatacenter/mvdata-sdk-go/feature/ec2/imds"
+	"github.com/mvdatacenter/mvdata-sdk-go/mvdata"
 )
 
 const execEnvVar = "AWS_EXECUTION_ENV"

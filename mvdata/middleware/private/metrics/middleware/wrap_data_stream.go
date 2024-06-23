@@ -2,9 +2,9 @@ package middleware
 
 import (
 	"context"
-	"github.com/aws/aws-sdk-go-v2/aws/middleware/private/metrics"
-	"github.com/aws/aws-sdk-go-v2/aws/middleware/private/metrics/readcloserwithmetrics"
 	"github.com/aws/smithy-go/middleware"
+	"github.com/mvdatacenter/mvdata-sdk-go/mvdata/middleware/private/metrics"
+	"github.com/mvdatacenter/mvdata-sdk-go/mvdata/middleware/private/metrics/readcloserwithmetrics"
 	"io"
 	"reflect"
 )

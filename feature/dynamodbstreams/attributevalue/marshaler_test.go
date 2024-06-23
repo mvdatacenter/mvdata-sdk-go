@@ -6,7 +6,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/aws/aws-sdk-go-v2/service/dynamodbstreams/types"
+	"github.com/mvdatacenter/mvdata-sdk-go/service/dynamodbstreams/types"
 )
 
 type simpleMarshalStruct struct {

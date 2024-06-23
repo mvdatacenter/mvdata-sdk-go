@@ -3,11 +3,11 @@
 package smithyrpcv2cbor
 
 import (
-	"github.com/aws/aws-sdk-go-v2/aws"
 	smithyauth "github.com/aws/smithy-go/auth"
 	"github.com/aws/smithy-go/logging"
 	"github.com/aws/smithy-go/middleware"
 	smithyhttp "github.com/aws/smithy-go/transport/http"
+	"github.com/mvdatacenter/mvdata-sdk-go/mvdata"
 	"net/http"
 )
 

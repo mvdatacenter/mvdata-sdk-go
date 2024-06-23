@@ -8,13 +8,13 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
-	awshttp "github.com/aws/aws-sdk-go-v2/aws/transport/http"
-	"github.com/aws/aws-sdk-go-v2/config"
-	"github.com/aws/aws-sdk-go-v2/credentials"
-	"github.com/aws/aws-sdk-go-v2/credentials/stscreds"
 	"github.com/aws/smithy-go/middleware"
 	smithyhttp "github.com/aws/smithy-go/transport/http"
+	"github.com/mvdatacenter/mvdata-sdk-go/config"
+	"github.com/mvdatacenter/mvdata-sdk-go/credentials"
+	"github.com/mvdatacenter/mvdata-sdk-go/credentials/stscreds"
+	"github.com/mvdatacenter/mvdata-sdk-go/mvdata"
+	awshttp "github.com/mvdatacenter/mvdata-sdk-go/mvdata/transport/http"
 )
 
 func ExampleWithCredentialsCacheOptions() {

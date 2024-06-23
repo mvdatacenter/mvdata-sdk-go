@@ -3,8 +3,8 @@ package attributevalue
 import (
 	"fmt"
 
-	ddb "github.com/aws/aws-sdk-go-v2/service/dynamodb/types"
-	streams "github.com/aws/aws-sdk-go-v2/service/dynamodbstreams/types"
+	ddb "github.com/mvdatacenter/mvdata-sdk-go/service/dynamodb/types"
+	streams "github.com/mvdatacenter/mvdata-sdk-go/service/dynamodbstreams/types"
 )
 
 // FromDynamoDBMap converts a map of Amazon DynamoDB

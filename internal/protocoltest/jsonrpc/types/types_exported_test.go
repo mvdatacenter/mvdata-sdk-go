@@ -4,7 +4,7 @@ package types_test
 
 import (
 	"fmt"
-	"github.com/aws/aws-sdk-go-v2/internal/protocoltest/jsonrpc/types"
+	"github.com/mvdatacenter/mvdata-sdk-go/internal/protocoltest/jsonrpc/types"
 	"time"
 )
 

@@ -6,11 +6,11 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
-	awshttp "github.com/aws/aws-sdk-go-v2/aws/transport/http"
-	"github.com/aws/aws-sdk-go-v2/config"
-	"github.com/aws/aws-sdk-go-v2/feature/s3/manager"
-	"github.com/aws/aws-sdk-go-v2/service/s3"
+	"github.com/mvdatacenter/mvdata-sdk-go/config"
+	"github.com/mvdatacenter/mvdata-sdk-go/feature/s3/manager"
+	"github.com/mvdatacenter/mvdata-sdk-go/mvdata"
+	awshttp "github.com/mvdatacenter/mvdata-sdk-go/mvdata/transport/http"
+	"github.com/mvdatacenter/mvdata-sdk-go/service/s3"
 )
 
 // ExampleNewUploader_overrideReadSeekerProvider gives an example

@@ -104,9 +104,9 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
-	"github.com/aws/aws-sdk-go-v2/service/sts"
-	"github.com/aws/aws-sdk-go-v2/service/sts/types"
+	"github.com/mvdatacenter/mvdata-sdk-go/mvdata"
+	"github.com/mvdatacenter/mvdata-sdk-go/service/sts"
+	"github.com/mvdatacenter/mvdata-sdk-go/service/sts/types"
 )
 
 // StdinTokenProvider will prompt on stdout and read from stdin for a string value.

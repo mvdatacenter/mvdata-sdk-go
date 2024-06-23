@@ -3,11 +3,11 @@ package v4a
 import (
 	"context"
 	"fmt"
-	awsmiddleware "github.com/aws/aws-sdk-go-v2/aws/middleware"
-	v4 "github.com/aws/aws-sdk-go-v2/aws/signer/v4"
-	internalauth "github.com/aws/aws-sdk-go-v2/internal/auth"
 	"github.com/aws/smithy-go/middleware"
 	smithyhttp "github.com/aws/smithy-go/transport/http"
+	internalauth "github.com/mvdatacenter/mvdata-sdk-go/internal/auth"
+	awsmiddleware "github.com/mvdatacenter/mvdata-sdk-go/mvdata/middleware"
+	v4 "github.com/mvdatacenter/mvdata-sdk-go/mvdata/signer/v4"
 	"net/http"
 	"time"
 )

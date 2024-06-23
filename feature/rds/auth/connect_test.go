@@ -6,8 +6,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
-	"github.com/aws/aws-sdk-go-v2/feature/rds/auth"
+	"github.com/mvdatacenter/mvdata-sdk-go/feature/rds/auth"
+	"github.com/mvdatacenter/mvdata-sdk-go/mvdata"
 )
 
 func TestBuildAuthToken(t *testing.T) {

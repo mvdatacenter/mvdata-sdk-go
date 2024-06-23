@@ -3,8 +3,8 @@
 package types
 
 import (
-	"github.com/aws/aws-sdk-go-v2/internal/protocoltest/jsonrpc10/document"
 	smithydocument "github.com/aws/smithy-go/document"
+	"github.com/mvdatacenter/mvdata-sdk-go/internal/protocoltest/jsonrpc10/document"
 	"time"
 )
 
