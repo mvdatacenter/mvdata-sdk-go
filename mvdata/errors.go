@@ -1,9 +1,12 @@
-package aws
+package mvdata
 
-// MissingRegionError is an error that is returned if region configuration
-// value was not found.
-type MissingRegionError struct{}
+import "fmt"
 
-func (*MissingRegionError) Error() string {
-	return "an AWS region is required, but was not found"
+// NotFoundError is returned when the API responds with 404.
+type NotFoundError struct {
+	Resource string
+}
+
+func (e *NotFoundError) Error() string {
+	return fmt.Sprintf("%s not found", e.Resource)
 }
