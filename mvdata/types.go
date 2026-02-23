@@ -17,14 +17,19 @@ type Subnet struct {
 // Instance represents a compute instance.
 type Instance struct {
 	Name              string  `json:"name"`
-	VPCName           string  `json:"vpcName"`
-	SubnetName        string  `json:"subnetName"`
 	InstanceType      string  `json:"instanceType"`
 	AuthorizedKeyName string  `json:"authorizedKeyName"`
 	PrivateIP         string  `json:"privateIp,omitempty"`
 	Status            string  `json:"status,omitempty"`
 	HourlyPrice       float64 `json:"hourlyPrice,omitempty"`
 	CreatedAt         string  `json:"createdAt,omitempty"`
+}
+
+// createInstanceRequest is the request body for POST /vpcs/:vpcName/instances.
+type createInstanceRequest struct {
+	Name              string `json:"name"`
+	InstanceType      string `json:"instanceType"`
+	AuthorizedKeyName string `json:"authorizedKeyName"`
 }
 
 // Key represents an SSH public key registered with the console.

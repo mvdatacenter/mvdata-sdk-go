@@ -216,7 +216,7 @@ func TestDeleteSubnet(t *testing.T) {
 
 func TestCreateInstance(t *testing.T) {
 	var gotMethod, gotPath string
-	var gotBody Instance
+	var gotBody createInstanceRequest
 
 	client := newTestClient(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		gotMethod = r.Method
@@ -225,15 +225,13 @@ func TestCreateInstance(t *testing.T) {
 		json.Unmarshal(body, &gotBody)
 		w.WriteHeader(http.StatusCreated)
 		json.NewEncoder(w).Encode(Instance{
-			Name: "web-01", VPCName: "production", SubnetName: "public",
-			InstanceType: "c1", AuthorizedKeyName: "deploy-key",
+			Name: "web-01", InstanceType: "c1", AuthorizedKeyName: "deploy-key",
 			PrivateIP: "10.0.0.2", Status: "running", HourlyPrice: 0.50,
 		})
 	}))
 
-	result, err := client.CreateInstance(context.Background(), &Instance{
-		Name: "web-01", VPCName: "production", SubnetName: "public",
-		InstanceType: "c1", AuthorizedKeyName: "deploy-key",
+	result, err := client.CreateInstance(context.Background(), "production", &Instance{
+		Name: "web-01", InstanceType: "c1", AuthorizedKeyName: "deploy-key",
 	})
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -241,14 +239,14 @@ func TestCreateInstance(t *testing.T) {
 	if gotMethod != http.MethodPost {
 		t.Errorf("expected POST, got %s", gotMethod)
 	}
-	if gotPath != "/instances" {
-		t.Errorf("expected /instances, got %s", gotPath)
+	if gotPath != "/vpcs/production/instances" {
+		t.Errorf("expected /vpcs/production/instances, got %s", gotPath)
 	}
-	if gotBody.VPCName != "production" {
-		t.Errorf("expected vpcName production, got %s", gotBody.VPCName)
+	if gotBody.Name != "web-01" {
+		t.Errorf("expected name web-01, got %s", gotBody.Name)
 	}
-	if gotBody.SubnetName != "public" {
-		t.Errorf("expected subnetName public, got %s", gotBody.SubnetName)
+	if gotBody.InstanceType != "c1" {
+		t.Errorf("expected instanceType c1, got %s", gotBody.InstanceType)
 	}
 	if result.PrivateIP != "10.0.0.2" {
 		t.Errorf("expected privateIp 10.0.0.2, got %s", result.PrivateIP)
@@ -261,25 +259,41 @@ func TestGetInstance(t *testing.T) {
 	client := newTestClient(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		gotMethod = r.Method
 		gotPath = r.URL.Path
-		json.NewEncoder(w).Encode(Instance{
-			Name: "web-01", VPCName: "production", SubnetName: "public",
-			InstanceType: "c1", AuthorizedKeyName: "deploy-key",
-			PrivateIP: "10.0.0.2", Status: "running",
+		json.NewEncoder(w).Encode([]Instance{
+			{
+				Name: "web-01", InstanceType: "c1", AuthorizedKeyName: "deploy-key",
+				PrivateIP: "10.0.0.2", Status: "running",
+			},
 		})
 	}))
 
-	result, err := client.GetInstance(context.Background(), "web-01")
+	result, err := client.GetInstance(context.Background(), "production", "web-01")
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
 	if gotMethod != http.MethodGet {
 		t.Errorf("expected GET, got %s", gotMethod)
 	}
-	if gotPath != "/instances/web-01" {
-		t.Errorf("expected /instances/web-01, got %s", gotPath)
+	if gotPath != "/vpcs/production/instances" {
+		t.Errorf("expected /vpcs/production/instances, got %s", gotPath)
 	}
-	if result.VPCName != "production" {
-		t.Errorf("expected vpcName production, got %s", result.VPCName)
+	if result.Name != "web-01" {
+		t.Errorf("expected name web-01, got %s", result.Name)
+	}
+}
+
+func TestGetInstance_NotFound(t *testing.T) {
+	client := newTestClient(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		json.NewEncoder(w).Encode([]Instance{})
+	}))
+
+	_, err := client.GetInstance(context.Background(), "production", "nonexistent")
+	if err == nil {
+		t.Fatal("expected error for missing instance, got nil")
+	}
+	var nfe *NotFoundError
+	if !errors.As(err, &nfe) {
+		t.Errorf("expected NotFoundError, got %T: %v", err, err)
 	}
 }
 
@@ -292,14 +306,14 @@ func TestDeleteInstance(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	}))
 
-	if err := client.DeleteInstance(context.Background(), "web-01"); err != nil {
+	if err := client.DeleteInstance(context.Background(), "production", "web-01"); err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
 	if gotMethod != http.MethodDelete {
 		t.Errorf("expected DELETE, got %s", gotMethod)
 	}
-	if gotPath != "/instances/web-01" {
-		t.Errorf("expected /instances/web-01, got %s", gotPath)
+	if gotPath != "/vpcs/production/instances/web-01" {
+		t.Errorf("expected /vpcs/production/instances/web-01, got %s", gotPath)
 	}
 }
 
@@ -570,7 +584,7 @@ func TestCreateInstance_ServerError(t *testing.T) {
 		w.Write([]byte(`{"error":"Internal Server Error"}`))
 	}))
 
-	_, err := client.CreateInstance(context.Background(), &Instance{Name: "test", InstanceType: "c1", AuthorizedKeyName: "key"})
+	_, err := client.CreateInstance(context.Background(), "test-vpc", &Instance{Name: "test", InstanceType: "c1", AuthorizedKeyName: "key"})
 	if err == nil {
 		t.Fatal("expected error for 500, got nil")
 	}
