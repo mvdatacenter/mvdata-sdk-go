@@ -91,8 +91,9 @@ type DeviceAuth struct {
 
 // DeviceTokenResponse is the response from POST /auth/device/token.
 type DeviceTokenResponse struct {
-	Status      string `json:"status"`
-	APIToken    string `json:"api_token,omitempty"`
-	AccountName string `json:"account_name,omitempty"`
-	Email       string `json:"email,omitempty"`
+	Status        string `json:"status"`
+	APIToken      string `json:"api_token,omitempty"`
+	AccountName   string `json:"account_name,omitempty"`
+	AccountNumber string `json:"account_number,omitempty"`
+	Email         string `json:"email,omitempty"`
 }
