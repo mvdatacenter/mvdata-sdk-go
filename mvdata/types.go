@@ -62,3 +62,37 @@ type InstanceType struct {
 	InstanceType string  `json:"instanceType"`
 	HourlyPrice  float64 `json:"hourlyPrice"`
 }
+
+// APIKey represents a console API key.
+type APIKey struct {
+	ID         string `json:"id"`
+	Name       string `json:"name"`
+	Key        string `json:"key,omitempty"`
+	Prefix     string `json:"prefix"`
+	ExpiresAt  string `json:"expiresAt,omitempty"`
+	LastUsedAt string `json:"lastUsedAt,omitempty"`
+	CreatedAt  string `json:"createdAt,omitempty"`
+}
+
+// APIKeyCreate is the request body for creating an API key.
+type APIKeyCreate struct {
+	Name      string `json:"name"`
+	ExpiresAt string `json:"expiresAt,omitempty"`
+}
+
+// DeviceAuth is the response from POST /auth/device/authorize.
+type DeviceAuth struct {
+	DeviceCode      string `json:"device_code"`
+	UserCode        string `json:"user_code"`
+	VerificationURI string `json:"verification_uri"`
+	ExpiresIn       int    `json:"expires_in"`
+	Interval        int    `json:"interval"`
+}
+
+// DeviceTokenResponse is the response from POST /auth/device/token.
+type DeviceTokenResponse struct {
+	Status      string `json:"status"`
+	APIToken    string `json:"api_token,omitempty"`
+	AccountName string `json:"account_name,omitempty"`
+	Email       string `json:"email,omitempty"`
+}

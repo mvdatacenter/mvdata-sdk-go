@@ -607,3 +607,188 @@ func TestNew(t *testing.T) {
 		t.Error("expected non-nil HTTPClient")
 	}
 }
+
+// --- API Key ---
+
+func TestCreateAPIKey(t *testing.T) {
+	var gotMethod, gotPath string
+	var gotBody APIKeyCreate
+
+	client := newTestClient(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		gotMethod = r.Method
+		gotPath = r.URL.Path
+		body, _ := io.ReadAll(r.Body)
+		json.Unmarshal(body, &gotBody)
+		w.WriteHeader(http.StatusCreated)
+		json.NewEncoder(w).Encode(APIKey{
+			ID: "abc-123", Name: "terraform-prod", Key: "mvd_test1234",
+			Prefix: "mvd_test1234", CreatedAt: "2025-01-01T00:00:00Z",
+		})
+	}))
+
+	result, err := client.CreateAPIKey(context.Background(), &APIKeyCreate{Name: "terraform-prod"})
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if gotMethod != http.MethodPost {
+		t.Errorf("expected POST, got %s", gotMethod)
+	}
+	if gotPath != "/auth/api-keys" {
+		t.Errorf("expected /auth/api-keys, got %s", gotPath)
+	}
+	if gotBody.Name != "terraform-prod" {
+		t.Errorf("expected name terraform-prod, got %s", gotBody.Name)
+	}
+	if result.Name != "terraform-prod" {
+		t.Errorf("expected result name terraform-prod, got %s", result.Name)
+	}
+	if result.Key != "mvd_test1234" {
+		t.Errorf("expected result key mvd_test1234, got %s", result.Key)
+	}
+}
+
+func TestListAPIKeys(t *testing.T) {
+	var gotMethod, gotPath string
+
+	client := newTestClient(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		gotMethod = r.Method
+		gotPath = r.URL.Path
+		json.NewEncoder(w).Encode([]APIKey{
+			{ID: "abc-123", Name: "key-1", Prefix: "mvd_abc12345"},
+			{ID: "def-456", Name: "key-2", Prefix: "mvd_def67890"},
+		})
+	}))
+
+	result, err := client.ListAPIKeys(context.Background())
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if gotMethod != http.MethodGet {
+		t.Errorf("expected GET, got %s", gotMethod)
+	}
+	if gotPath != "/auth/api-keys" {
+		t.Errorf("expected /auth/api-keys, got %s", gotPath)
+	}
+	if len(result) != 2 {
+		t.Fatalf("expected 2 API keys, got %d", len(result))
+	}
+	if result[0].Name != "key-1" {
+		t.Errorf("expected first key name key-1, got %s", result[0].Name)
+	}
+}
+
+func TestDeleteAPIKey(t *testing.T) {
+	var gotMethod, gotPath string
+
+	client := newTestClient(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		gotMethod = r.Method
+		gotPath = r.URL.Path
+		w.WriteHeader(http.StatusNoContent)
+	}))
+
+	if err := client.DeleteAPIKey(context.Background(), "abc-123"); err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if gotMethod != http.MethodDelete {
+		t.Errorf("expected DELETE, got %s", gotMethod)
+	}
+	if gotPath != "/auth/api-keys/abc-123" {
+		t.Errorf("expected /auth/api-keys/abc-123, got %s", gotPath)
+	}
+}
+
+// --- Device Flow ---
+
+func TestDeviceAuthorize(t *testing.T) {
+	var gotMethod, gotPath string
+
+	client := newTestClient(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		gotMethod = r.Method
+		gotPath = r.URL.Path
+		json.NewEncoder(w).Encode(DeviceAuth{
+			DeviceCode:      "device-code-123",
+			UserCode:        "ABCD-1234",
+			VerificationURI: "https://console.mvdatacenter.com/device",
+			ExpiresIn:       900,
+			Interval:        5,
+		})
+	}))
+
+	result, err := client.DeviceAuthorize(context.Background())
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if gotMethod != http.MethodPost {
+		t.Errorf("expected POST, got %s", gotMethod)
+	}
+	if gotPath != "/auth/device/authorize" {
+		t.Errorf("expected /auth/device/authorize, got %s", gotPath)
+	}
+	if result.DeviceCode != "device-code-123" {
+		t.Errorf("expected device_code device-code-123, got %s", result.DeviceCode)
+	}
+	if result.UserCode != "ABCD-1234" {
+		t.Errorf("expected user_code ABCD-1234, got %s", result.UserCode)
+	}
+	if result.ExpiresIn != 900 {
+		t.Errorf("expected expires_in 900, got %d", result.ExpiresIn)
+	}
+}
+
+func TestDeviceToken_Pending(t *testing.T) {
+	var gotMethod, gotPath string
+	var gotBody deviceTokenRequest
+
+	client := newTestClient(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		gotMethod = r.Method
+		gotPath = r.URL.Path
+		body, _ := io.ReadAll(r.Body)
+		json.Unmarshal(body, &gotBody)
+		json.NewEncoder(w).Encode(DeviceTokenResponse{Status: "pending"})
+	}))
+
+	result, err := client.DeviceToken(context.Background(), "device-code-123")
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if gotMethod != http.MethodPost {
+		t.Errorf("expected POST, got %s", gotMethod)
+	}
+	if gotPath != "/auth/device/token" {
+		t.Errorf("expected /auth/device/token, got %s", gotPath)
+	}
+	if gotBody.DeviceCode != "device-code-123" {
+		t.Errorf("expected device_code device-code-123, got %s", gotBody.DeviceCode)
+	}
+	if result.Status != "pending" {
+		t.Errorf("expected status pending, got %s", result.Status)
+	}
+}
+
+func TestDeviceToken_Complete(t *testing.T) {
+	client := newTestClient(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		json.NewEncoder(w).Encode(DeviceTokenResponse{
+			Status:      "complete",
+			APIToken:    "mvd_abc123",
+			AccountName: "comsol",
+			Email:       "alice@customer.com",
+		})
+	}))
+
+	result, err := client.DeviceToken(context.Background(), "device-code-123")
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if result.Status != "complete" {
+		t.Errorf("expected status complete, got %s", result.Status)
+	}
+	if result.APIToken != "mvd_abc123" {
+		t.Errorf("expected api_token mvd_abc123, got %s", result.APIToken)
+	}
+	if result.AccountName != "comsol" {
+		t.Errorf("expected account_name comsol, got %s", result.AccountName)
+	}
+	if result.Email != "alice@customer.com" {
+		t.Errorf("expected email alice@customer.com, got %s", result.Email)
+	}
+}
