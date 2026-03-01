@@ -17,6 +17,7 @@ type Subnet struct {
 // Instance represents a compute instance.
 type Instance struct {
 	Name              string  `json:"name"`
+	VPCName           string  `json:"vpcName,omitempty"`
 	InstanceType      string  `json:"instanceType"`
 	AuthorizedKeyName string  `json:"authorizedKeyName"`
 	PrivateIP         string  `json:"privateIp,omitempty"`
@@ -25,9 +26,10 @@ type Instance struct {
 	CreatedAt         string  `json:"createdAt,omitempty"`
 }
 
-// createInstanceRequest is the request body for POST /vpcs/:vpcName/instances.
+// createInstanceRequest is the request body for POST /instances.
 type createInstanceRequest struct {
 	Name              string `json:"name"`
+	VPCName           string `json:"vpcName"`
 	InstanceType      string `json:"instanceType"`
 	AuthorizedKeyName string `json:"authorizedKeyName"`
 }
