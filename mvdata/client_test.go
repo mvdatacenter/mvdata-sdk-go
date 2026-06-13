@@ -359,7 +359,7 @@ func TestGetKey(t *testing.T) {
 		gotMethod = r.Method
 		gotPath = r.URL.Path
 		gotQuery = r.URL.RawQuery
-		json.NewEncoder(w).Encode(Key{Name: "deploy-key", Key: "ssh-ed25519 AAAA..."})
+		json.NewEncoder(w).Encode([]Key{{Name: "deploy-key", Key: "ssh-ed25519 AAAA..."}})
 	}))
 
 	result, err := client.GetKey(context.Background(), "deploy-key")
@@ -389,6 +389,21 @@ func TestGetKey_NotFound(t *testing.T) {
 	_, err := client.GetKey(context.Background(), "nonexistent")
 	if err == nil {
 		t.Fatal("expected error for 404, got nil")
+	}
+	var nfe *NotFoundError
+	if !errors.As(err, &nfe) {
+		t.Errorf("expected NotFoundError, got %T: %v", err, err)
+	}
+}
+
+func TestGetKey_EmptyList(t *testing.T) {
+	client := newTestClient(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		json.NewEncoder(w).Encode([]Key{})
+	}))
+
+	_, err := client.GetKey(context.Background(), "nonexistent")
+	if err == nil {
+		t.Fatal("expected error for empty key list, got nil")
 	}
 	var nfe *NotFoundError
 	if !errors.As(err, &nfe) {
