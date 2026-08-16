@@ -6,9 +6,15 @@ import (
 	"net/http"
 )
 
-// CreateVPC creates a new VPC via POST /vpcs.
+// CreateVPC creates a new VPC via POST /vpcs. A VPC with no region lands in the deployment
+// default.
 func (c *Client) CreateVPC(ctx context.Context, vpc *VPC) (*VPC, error) {
-	body, err := encodeBody(vpc)
+	reqBody := createVPCRequest{Name: vpc.Name}
+	if vpc.Region != nil {
+		reqBody.Region = vpc.Region.Code
+	}
+
+	body, err := encodeBody(reqBody)
 	if err != nil {
 		return nil, fmt.Errorf("marshaling VPC: %w", err)
 	}

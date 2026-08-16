@@ -8,7 +8,13 @@ import (
 
 // CreateSubnet creates a new subnet via POST /subnets.
 func (c *Client) CreateSubnet(ctx context.Context, subnet *Subnet) (*Subnet, error) {
-	body, err := encodeBody(subnet)
+	reqBody := createSubnetRequest{
+		Name:      subnet.Name,
+		VPCName:   subnet.VPCName,
+		CIDRBlock: subnet.CIDRBlock,
+	}
+
+	body, err := encodeBody(reqBody)
 	if err != nil {
 		return nil, fmt.Errorf("marshaling subnet: %w", err)
 	}
