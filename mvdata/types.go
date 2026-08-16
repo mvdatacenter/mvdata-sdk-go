@@ -1,17 +1,43 @@
 package mvdata
 
+// Region is a location the platform provisions into. Status is what makes one usable — a region
+// the platform has announced but cannot yet provision into is served here and refused at create.
+type Region struct {
+	Code        string `json:"code"`
+	DisplayName string `json:"displayName"`
+	Status      string `json:"status"`
+	IsDefault   bool   `json:"isDefault"`
+}
+
 // VPC represents a virtual private cloud.
 type VPC struct {
-	Name      string `json:"name"`
-	CreatedAt string `json:"createdAt,omitempty"`
+	Name      string  `json:"name"`
+	Region    *Region `json:"region,omitempty"`
+	CreatedAt string  `json:"createdAt,omitempty"`
+}
+
+// createVPCRequest is the request body for POST /vpcs. The API names a region by code on the way
+// in and returns the whole region on the way out, so one field cannot carry both directions.
+type createVPCRequest struct {
+	Name   string `json:"name"`
+	Region string `json:"region,omitempty"`
 }
 
 // Subnet represents a subnet within a VPC.
 type Subnet struct {
+	Name      string  `json:"name"`
+	VPCName   string  `json:"vpcName"`
+	CIDRBlock string  `json:"cidrBlock"`
+	Region    *Region `json:"region,omitempty"`
+	CreatedAt string  `json:"createdAt,omitempty"`
+}
+
+// createSubnetRequest is the request body for POST /subnets. A subnet takes the region of the VPC
+// it is created in, so the caller does not choose one.
+type createSubnetRequest struct {
 	Name      string `json:"name"`
 	VPCName   string `json:"vpcName"`
 	CIDRBlock string `json:"cidrBlock"`
-	CreatedAt string `json:"createdAt,omitempty"`
 }
 
 // Instance represents a compute instance.
@@ -23,6 +49,7 @@ type Instance struct {
 	PrivateIP         string  `json:"privateIp,omitempty"`
 	Status            string  `json:"status,omitempty"`
 	HourlyPrice       float64 `json:"hourlyPrice,omitempty"`
+	Region            *Region `json:"region,omitempty"`
 	CreatedAt         string  `json:"createdAt,omitempty"`
 }
 
@@ -43,13 +70,25 @@ type Key struct {
 
 // KubernetesCluster represents a managed Kubernetes cluster.
 type KubernetesCluster struct {
+	Name             string  `json:"name"`
+	Version          string  `json:"version"`
+	NodeInstanceType string  `json:"nodeInstanceType"`
+	NodeCount        int     `json:"nodeCount"`
+	Endpoint         string  `json:"endpoint,omitempty"`
+	Status           string  `json:"status,omitempty"`
+	Region           *Region `json:"region,omitempty"`
+	CreatedAt        string  `json:"createdAt,omitempty"`
+}
+
+// createKubernetesClusterRequest is the request body for POST /kubernetes. Region is a code here
+// for the same reason it is on a VPC create, and the fields the platform fills in — endpoint,
+// status, createdAt — are not sent.
+type createKubernetesClusterRequest struct {
 	Name             string `json:"name"`
 	Version          string `json:"version"`
 	NodeInstanceType string `json:"nodeInstanceType"`
 	NodeCount        int    `json:"nodeCount"`
-	Endpoint         string `json:"endpoint,omitempty"`
-	Status           string `json:"status,omitempty"`
-	CreatedAt        string `json:"createdAt,omitempty"`
+	Region           string `json:"region,omitempty"`
 }
 
 // KubernetesClusterUpdate holds mutable fields for PATCH.

@@ -6,9 +6,20 @@ import (
 	"net/http"
 )
 
-// CreateKubernetesCluster creates a managed K8s cluster via POST /kubernetes.
+// CreateKubernetesCluster creates a managed K8s cluster via POST /kubernetes. A cluster with no
+// region lands in the deployment default.
 func (c *Client) CreateKubernetesCluster(ctx context.Context, cluster *KubernetesCluster) (*KubernetesCluster, error) {
-	body, err := encodeBody(cluster)
+	reqBody := createKubernetesClusterRequest{
+		Name:             cluster.Name,
+		Version:          cluster.Version,
+		NodeInstanceType: cluster.NodeInstanceType,
+		NodeCount:        cluster.NodeCount,
+	}
+	if cluster.Region != nil {
+		reqBody.Region = cluster.Region.Code
+	}
+
+	body, err := encodeBody(reqBody)
 	if err != nil {
 		return nil, fmt.Errorf("marshaling kubernetes cluster: %w", err)
 	}

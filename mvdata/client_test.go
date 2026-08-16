@@ -807,3 +807,336 @@ func TestDeviceToken_Complete(t *testing.T) {
 		t.Errorf("expected email alice@customer.com, got %s", result.Email)
 	}
 }
+
+// The JSON the console API serves for a region, so these tests decode the wire text rather than a
+// re-encoding of the Go struct under test.
+const uaeRegionJSON = `{"code":"uae-1","displayName":"United Arab Emirates","status":"available","isDefault":true}`
+
+func TestListRegions(t *testing.T) {
+	var gotMethod, gotPath string
+
+	client := newTestClient(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		gotMethod = r.Method
+		gotPath = r.URL.Path
+		w.Write([]byte(`[` + uaeRegionJSON + `,{"code":"eu-1","displayName":"Europe","status":"planned","isDefault":false}]`))
+	}))
+
+	result, err := client.ListRegions(context.Background())
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if gotMethod != http.MethodGet {
+		t.Errorf("expected GET, got %s", gotMethod)
+	}
+	if gotPath != "/regions" {
+		t.Errorf("expected /regions, got %s", gotPath)
+	}
+	if len(result) != 2 {
+		t.Fatalf("expected 2 regions, got %d", len(result))
+	}
+	if result[0].Code != "uae-1" {
+		t.Errorf("expected code uae-1, got %s", result[0].Code)
+	}
+	if result[0].DisplayName != "United Arab Emirates" {
+		t.Errorf("expected displayName United Arab Emirates, got %s", result[0].DisplayName)
+	}
+	if result[0].Status != "available" {
+		t.Errorf("expected status available, got %s", result[0].Status)
+	}
+	if !result[0].IsDefault {
+		t.Error("expected uae-1 to be the default region")
+	}
+	if result[1].IsDefault {
+		t.Error("expected eu-1 not to be the default region")
+	}
+}
+
+func TestGetRegion(t *testing.T) {
+	var gotPath, gotQuery string
+
+	client := newTestClient(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		gotPath = r.URL.Path
+		gotQuery = r.URL.Query().Get("code")
+		w.Write([]byte(uaeRegionJSON))
+	}))
+
+	result, err := client.GetRegion(context.Background(), "uae-1")
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if gotPath != "/regions" {
+		t.Errorf("expected /regions, got %s", gotPath)
+	}
+	if gotQuery != "uae-1" {
+		t.Errorf("expected code query uae-1, got %s", gotQuery)
+	}
+	if result.Code != "uae-1" {
+		t.Errorf("expected code uae-1, got %s", result.Code)
+	}
+	if result.DisplayName != "United Arab Emirates" {
+		t.Errorf("expected displayName United Arab Emirates, got %s", result.DisplayName)
+	}
+}
+
+func TestGetRegion_NotFound(t *testing.T) {
+	client := newTestClient(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusNotFound)
+		w.Write([]byte(`{"error":"Region mars-1 does not exist"}`))
+	}))
+
+	_, err := client.GetRegion(context.Background(), "mars-1")
+	if err == nil {
+		t.Fatal("expected error for 404, got nil")
+	}
+	var nfe *NotFoundError
+	if !errors.As(err, &nfe) {
+		t.Errorf("expected NotFoundError, got %T: %v", err, err)
+	}
+}
+
+// The API labels a subnet and an instance with the region of the VPC they sit in, not one of their
+// own, so all four resources have to decode the same object.
+func TestRegionDecodesOnResources(t *testing.T) {
+	tests := []struct {
+		name     string
+		response string
+		read     func(*Client) (*Region, error)
+	}{
+		{
+			name:     "VPC",
+			response: `{"name":"production","region":` + uaeRegionJSON + `}`,
+			read: func(c *Client) (*Region, error) {
+				vpc, err := c.GetVPC(context.Background(), "production")
+				if err != nil {
+					return nil, err
+				}
+				return vpc.Region, nil
+			},
+		},
+		{
+			name:     "subnet",
+			response: `{"name":"web","vpcName":"production","cidrBlock":"10.0.1.0/24","region":` + uaeRegionJSON + `}`,
+			read: func(c *Client) (*Region, error) {
+				subnet, err := c.GetSubnet(context.Background(), "web")
+				if err != nil {
+					return nil, err
+				}
+				return subnet.Region, nil
+			},
+		},
+		{
+			name:     "instance",
+			response: `{"name":"web-01","instanceType":"c1","authorizedKeyName":"deploy","region":` + uaeRegionJSON + `}`,
+			read: func(c *Client) (*Region, error) {
+				instance, err := c.GetInstance(context.Background(), "web-01")
+				if err != nil {
+					return nil, err
+				}
+				return instance.Region, nil
+			},
+		},
+		{
+			name:     "kubernetes cluster",
+			response: `{"name":"prod","version":"1.31","nodeInstanceType":"c1","nodeCount":3,"region":` + uaeRegionJSON + `}`,
+			read: func(c *Client) (*Region, error) {
+				cluster, err := c.GetKubernetesCluster(context.Background(), "prod")
+				if err != nil {
+					return nil, err
+				}
+				return cluster.Region, nil
+			},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			client := newTestClient(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+				w.Write([]byte(tt.response))
+			}))
+
+			region, err := tt.read(client)
+			if err != nil {
+				t.Fatalf("unexpected error: %v", err)
+			}
+			if region == nil {
+				t.Fatal("expected a region, got nil")
+			}
+			if region.Code != "uae-1" {
+				t.Errorf("expected code uae-1, got %s", region.Code)
+			}
+			if !region.IsDefault {
+				t.Error("expected the region to be the default")
+			}
+		})
+	}
+}
+
+// A resource the API reports as unlabelled reads as no region, not as a zero-valued one.
+func TestGetVPC_NullRegion(t *testing.T) {
+	client := newTestClient(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte(`{"name":"production","region":null}`))
+	}))
+
+	result, err := client.GetVPC(context.Background(), "production")
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if result.Region != nil {
+		t.Errorf("expected no region, got %+v", result.Region)
+	}
+}
+
+func TestCreateVPC_Region(t *testing.T) {
+	var gotBody map[string]any
+
+	client := newTestClient(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		body, _ := io.ReadAll(r.Body)
+		if err := json.Unmarshal(body, &gotBody); err != nil {
+			t.Errorf("decoding request body: %v", err)
+		}
+		w.WriteHeader(http.StatusCreated)
+		w.Write([]byte(`{"name":"production","region":` + uaeRegionJSON + `}`))
+	}))
+
+	result, err := client.CreateVPC(context.Background(), &VPC{Name: "production", Region: &Region{Code: "uae-1"}})
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	// The API takes the code, not the region object it serves back.
+	if gotBody["region"] != "uae-1" {
+		t.Errorf("expected request region uae-1, got %v", gotBody["region"])
+	}
+	if result.Region == nil || result.Region.Code != "uae-1" {
+		t.Errorf("expected result region uae-1, got %+v", result.Region)
+	}
+}
+
+func TestCreateVPC_NoRegion(t *testing.T) {
+	var gotBody map[string]any
+
+	client := newTestClient(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		body, _ := io.ReadAll(r.Body)
+		json.Unmarshal(body, &gotBody)
+		w.WriteHeader(http.StatusCreated)
+		w.Write([]byte(`{"name":"production","region":` + uaeRegionJSON + `}`))
+	}))
+
+	// Omitting the region is what asks for the deployment default, so the key must be absent
+	// rather than empty.
+	if _, err := client.CreateVPC(context.Background(), &VPC{Name: "production"}); err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if _, ok := gotBody["region"]; ok {
+		t.Errorf("expected no region key in the request, got %v", gotBody["region"])
+	}
+}
+
+func TestCreateKubernetesCluster_Region(t *testing.T) {
+	var gotBody map[string]any
+
+	client := newTestClient(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		body, _ := io.ReadAll(r.Body)
+		if err := json.Unmarshal(body, &gotBody); err != nil {
+			t.Errorf("decoding request body: %v", err)
+		}
+		w.WriteHeader(http.StatusCreated)
+		w.Write([]byte(`{"name":"prod","version":"1.31","nodeInstanceType":"c1","nodeCount":3,"status":"provisioning","region":` + uaeRegionJSON + `}`))
+	}))
+
+	result, err := client.CreateKubernetesCluster(context.Background(), &KubernetesCluster{
+		Name:             "prod",
+		Version:          "1.31",
+		NodeInstanceType: "c1",
+		NodeCount:        3,
+		Region:           &Region{Code: "uae-1"},
+	})
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if gotBody["region"] != "uae-1" {
+		t.Errorf("expected request region uae-1, got %v", gotBody["region"])
+	}
+	if result.Region == nil || result.Region.Code != "uae-1" {
+		t.Errorf("expected result region uae-1, got %+v", result.Region)
+	}
+}
+
+// The create bodies carry what the API accepts and nothing else: a region object, or a field the
+// platform fills in, is rejected by the schema rather than ignored.
+func TestCreateRequestsCarryOnlyAcceptedFields(t *testing.T) {
+	tests := []struct {
+		name     string
+		create   func(*Client) error
+		wantKeys []string
+	}{
+		{
+			name: "VPC",
+			create: func(c *Client) error {
+				_, err := c.CreateVPC(context.Background(), &VPC{
+					Name:      "production",
+					Region:    &Region{Code: "uae-1", DisplayName: "United Arab Emirates", Status: "available"},
+					CreatedAt: "2025-01-01T00:00:00Z",
+				})
+				return err
+			},
+			wantKeys: []string{"name", "region"},
+		},
+		{
+			name: "subnet",
+			create: func(c *Client) error {
+				_, err := c.CreateSubnet(context.Background(), &Subnet{
+					Name:      "web",
+					VPCName:   "production",
+					CIDRBlock: "10.0.1.0/24",
+					Region:    &Region{Code: "uae-1"},
+					CreatedAt: "2025-01-01T00:00:00Z",
+				})
+				return err
+			},
+			wantKeys: []string{"name", "vpcName", "cidrBlock"},
+		},
+		{
+			name: "kubernetes cluster",
+			create: func(c *Client) error {
+				_, err := c.CreateKubernetesCluster(context.Background(), &KubernetesCluster{
+					Name:             "prod",
+					Version:          "1.31",
+					NodeInstanceType: "c1",
+					NodeCount:        3,
+					Region:           &Region{Code: "uae-1"},
+					Endpoint:         "https://prod.example",
+					Status:           "running",
+					CreatedAt:        "2025-01-01T00:00:00Z",
+				})
+				return err
+			},
+			wantKeys: []string{"name", "version", "nodeInstanceType", "nodeCount", "region"},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			var gotBody map[string]any
+			client := newTestClient(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+				body, _ := io.ReadAll(r.Body)
+				if err := json.Unmarshal(body, &gotBody); err != nil {
+					t.Errorf("decoding request body: %v", err)
+				}
+				w.WriteHeader(http.StatusCreated)
+				w.Write([]byte(`{"name":"x"}`))
+			}))
+
+			if err := tt.create(client); err != nil {
+				t.Fatalf("unexpected error: %v", err)
+			}
+			for _, key := range tt.wantKeys {
+				if _, ok := gotBody[key]; !ok {
+					t.Errorf("expected key %s in the request body, got %v", key, gotBody)
+				}
+			}
+			if len(gotBody) != len(tt.wantKeys) {
+				t.Errorf("expected only %v in the request body, got %v", tt.wantKeys, gotBody)
+			}
+		})
+	}
+}
