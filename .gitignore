@@ -1,0 +1,17 @@
+# Where the .githooks wrappers cache the central hook scripts they fetch.
+.ai-shared/
+# The pre-rename cache path. Nothing writes it any more; it stays ignored so a checkout that
+# still carries one is not turned into an untracked-file failure by this rename.
+.claude-shared/
+# Everything under .githooks/ except the two bootstrap wrappers is written by provisioning from
+# that cache, so only those two are the repository's to carry.
+.githooks/*
+!.githooks/pre-commit
+!.githooks/post-checkout
+# Auto-generated AI instruction files
+CLAUDE.md
+CODEX.md
+ANTIGRAVITY.md
+.claude/
+.codex/
+.agents/
