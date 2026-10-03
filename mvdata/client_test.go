@@ -1140,3 +1140,55 @@ func TestCreateRequestsCarryOnlyAcceptedFields(t *testing.T) {
 		})
 	}
 }
+
+// See #11.
+func TestContentTypeOnlyOnRequestsWithABody(t *testing.T) {
+	ctx := context.Background()
+	tests := []struct {
+		name            string
+		call            func(*Client) error
+		wantContentType string
+	}{
+		{"DeleteVPC", func(c *Client) error { return c.DeleteVPC(ctx, "production") }, ""},
+		{"DeleteSubnet", func(c *Client) error { return c.DeleteSubnet(ctx, "web") }, ""},
+		{"DeleteInstance", func(c *Client) error { return c.DeleteInstance(ctx, "web-1") }, ""},
+		{"DeleteKey", func(c *Client) error { return c.DeleteKey(ctx, "deploy") }, ""},
+		{"DeleteKubernetesCluster", func(c *Client) error { return c.DeleteKubernetesCluster(ctx, "prod") }, ""},
+		{"DeleteAPIKey", func(c *Client) error { return c.DeleteAPIKey(ctx, "key-1") }, ""},
+		{"DeviceAuthorize", func(c *Client) error { _, err := c.DeviceAuthorize(ctx); return err }, ""},
+		{"GetVPC", func(c *Client) error { _, err := c.GetVPC(ctx, "production"); return err }, ""},
+		{"CreateVPC", func(c *Client) error { _, err := c.CreateVPC(ctx, &VPC{Name: "production"}); return err }, "application/json"},
+		{"UpdateKubernetesCluster", func(c *Client) error {
+			_, err := c.UpdateKubernetesCluster(ctx, "prod", &KubernetesClusterUpdate{NodeCount: 3})
+			return err
+		}, "application/json"},
+		{"DeviceToken", func(c *Client) error { _, err := c.DeviceToken(ctx, "code"); return err }, "application/json"},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			var gotContentType string
+			client := newTestClient(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+				gotContentType = r.Header.Get("Content-Type")
+				body, _ := io.ReadAll(r.Body)
+				if gotContentType == "application/json" && len(body) == 0 {
+					w.WriteHeader(http.StatusBadRequest)
+					w.Write([]byte(`{"statusCode":400,"error":"Bad Request","message":"Invalid request payload input"}`))
+					return
+				}
+				if r.Method == http.MethodDelete {
+					w.WriteHeader(http.StatusNoContent)
+					return
+				}
+				w.Write([]byte(`{}`))
+			}))
+
+			if err := tt.call(client); err != nil {
+				t.Fatalf("unexpected error: %v", err)
+			}
+			if gotContentType != tt.wantContentType {
+				t.Errorf("expected Content-Type %q, got %q", tt.wantContentType, gotContentType)
+			}
+		})
+	}
+}

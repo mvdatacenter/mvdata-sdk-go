@@ -27,7 +27,10 @@ func New(baseURL, token string) *Client {
 // do executes an HTTP request, sets auth and content-type headers,
 // and decodes the JSON response into result (if non-nil).
 func (c *Client) do(req *http.Request, result any) error {
-	req.Header.Set("Content-Type", "application/json")
+	// See #11.
+	if req.Body != nil && req.Body != http.NoBody {
+		req.Header.Set("Content-Type", "application/json")
+	}
 	req.Header.Set("Authorization", "Bearer "+c.Token)
 
 	resp, err := c.HTTPClient.Do(req)
