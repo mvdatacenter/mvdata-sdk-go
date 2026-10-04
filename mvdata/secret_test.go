@@ -137,6 +137,37 @@ func TestSecretNamesAreEscapedIntoOnePathSegment(t *testing.T) {
 	}
 }
 
+func TestLastModifiedByDecodesTheConsoleIdentity(t *testing.T) {
+	tests := []struct {
+		name string
+		body string
+		want *Identity
+	}{
+		{"full identity", `{"storeName":"app","name":"db","version":2,"lastModifiedBy":{"email":"ops@example.com","type":"user","name":"Ops","createdAt":"2026-01-01T00:00:00Z","timezone":"Asia/Dubai","currentAccountName":"acme"}}`,
+			&Identity{Email: "ops@example.com", Type: "user", Name: "Ops"}},
+		{"null name", `{"storeName":"app","name":"db","lastModifiedBy":{"email":"seeder@example.com","type":"service","name":null}}`,
+			&Identity{Email: "seeder@example.com", Type: "service"}},
+		{"absent", `{"storeName":"app","name":"db"}`, nil},
+		{"null", `{"storeName":"app","name":"db","lastModifiedBy":null}`, nil},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			client := newTestClient(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+				w.Write([]byte(tt.body))
+			}))
+
+			got, err := client.GetSecret(context.Background(), "app", "db")
+			if err != nil {
+				t.Fatalf("unexpected error: %v", err)
+			}
+			if (got.LastModifiedBy == nil) != (tt.want == nil) || (tt.want != nil && *got.LastModifiedBy != *tt.want) {
+				t.Errorf("expected %+v, got %+v", tt.want, got.LastModifiedBy)
+			}
+		})
+	}
+}
+
 func TestValueNeverFormatsItsString(t *testing.T) {
 	v := NewValue("hunter2")
 	sv := SecretValue{StoreName: "app", Name: "db", Version: 1, Value: v}

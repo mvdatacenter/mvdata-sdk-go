@@ -137,13 +137,19 @@ type DeviceTokenResponse struct {
 	Email         string `json:"email,omitempty"`
 }
 
+type Identity struct {
+	Email string `json:"email"`
+	Type  string `json:"type"`
+	Name  string `json:"name"`
+}
+
 type SecretStore struct {
-	Name           string `json:"name"`
-	Description    string `json:"description,omitempty"`
-	SecretCount    int    `json:"secretCount,omitempty"`
-	CreatedAt      string `json:"createdAt,omitempty"`
-	UpdatedAt      string `json:"updatedAt,omitempty"`
-	LastModifiedBy string `json:"lastModifiedBy,omitempty"`
+	Name           string    `json:"name"`
+	Description    string    `json:"description,omitempty"`
+	SecretCount    int       `json:"secretCount,omitempty"`
+	CreatedAt      string    `json:"createdAt,omitempty"`
+	UpdatedAt      string    `json:"updatedAt,omitempty"`
+	LastModifiedBy *Identity `json:"lastModifiedBy,omitempty"`
 }
 
 type createSecretStoreRequest struct {
@@ -159,13 +165,13 @@ type SecretStoreUpdate struct {
 // Version changes on every write, so a caller compares it to detect a write it did not make.
 // SyncState is in-sync, missing or drifted.
 type SecretMetadata struct {
-	StoreName      string `json:"storeName"`
-	Name           string `json:"name"`
-	Version        int    `json:"version"`
-	SyncState      string `json:"syncState,omitempty"`
-	CreatedAt      string `json:"createdAt,omitempty"`
-	UpdatedAt      string `json:"updatedAt,omitempty"`
-	LastModifiedBy string `json:"lastModifiedBy,omitempty"`
+	StoreName      string    `json:"storeName"`
+	Name           string    `json:"name"`
+	Version        int       `json:"version"`
+	SyncState      string    `json:"syncState,omitempty"`
+	CreatedAt      string    `json:"createdAt,omitempty"`
+	UpdatedAt      string    `json:"updatedAt,omitempty"`
+	LastModifiedBy *Identity `json:"lastModifiedBy,omitempty"`
 }
 
 type SecretValue struct {
