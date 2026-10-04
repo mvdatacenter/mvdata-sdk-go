@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"net/http/httptest"
 	"strings"
 	"testing"
 )
@@ -282,7 +283,9 @@ func TestNotFoundKeepsItsTypeAndCarriesTheCode(t *testing.T) {
 }
 
 func TestTransportFailureIsUnavailable(t *testing.T) {
-	client := New("http://127.0.0.1:1", "test-token")
+	server := httptest.NewServer(http.NotFoundHandler())
+	server.Close()
+	client := New(server.URL, "test-token")
 
 	_, err := client.GetSecret(context.Background(), "app", "db")
 	if !errors.Is(err, ErrUnavailable) {
