@@ -136,3 +136,53 @@ type DeviceTokenResponse struct {
 	AccountNumber string `json:"account_number,omitempty"`
 	Email         string `json:"email,omitempty"`
 }
+
+type SecretStore struct {
+	Name           string `json:"name"`
+	Description    string `json:"description,omitempty"`
+	SecretCount    int    `json:"secretCount,omitempty"`
+	CreatedAt      string `json:"createdAt,omitempty"`
+	UpdatedAt      string `json:"updatedAt,omitempty"`
+	LastModifiedBy string `json:"lastModifiedBy,omitempty"`
+}
+
+type createSecretStoreRequest struct {
+	Name        string `json:"name"`
+	Description string `json:"description,omitempty"`
+}
+
+// Description is always sent, so an empty one clears it.
+type SecretStoreUpdate struct {
+	Description string `json:"description"`
+}
+
+// Version changes on every write, so a caller compares it to detect a write it did not make.
+// SyncState is in-sync, missing or drifted.
+type SecretMetadata struct {
+	StoreName      string `json:"storeName"`
+	Name           string `json:"name"`
+	Version        int    `json:"version"`
+	SyncState      string `json:"syncState,omitempty"`
+	CreatedAt      string `json:"createdAt,omitempty"`
+	UpdatedAt      string `json:"updatedAt,omitempty"`
+	LastModifiedBy string `json:"lastModifiedBy,omitempty"`
+}
+
+type SecretValue struct {
+	StoreName string `json:"storeName"`
+	Name      string `json:"name"`
+	Version   int    `json:"version"`
+	Value     Value  `json:"value"`
+}
+
+// createSecretRequest and updateSecretValueRequest carry the value as a plain string, because
+// Value marshals as [redacted].
+type createSecretRequest struct {
+	StoreName string `json:"storeName"`
+	Name      string `json:"name"`
+	Value     string `json:"value"`
+}
+
+type updateSecretValueRequest struct {
+	Value string `json:"value"`
+}
