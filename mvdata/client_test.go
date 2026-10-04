@@ -1112,6 +1112,27 @@ func TestCreateRequestsCarryOnlyAcceptedFields(t *testing.T) {
 			},
 			wantKeys: []string{"name", "version", "nodeInstanceType", "nodeCount", "region"},
 		},
+		{
+			name: "secret store",
+			create: func(c *Client) error {
+				_, err := c.CreateSecretStore(context.Background(), &SecretStore{
+					Name:           "app",
+					SecretCount:    2,
+					CreatedAt:      "2025-01-01T00:00:00Z",
+					LastModifiedBy: "someone",
+				})
+				return err
+			},
+			wantKeys: []string{"name"},
+		},
+		{
+			name: "secret",
+			create: func(c *Client) error {
+				_, err := c.CreateSecret(context.Background(), "app", "db-password", NewValue("hunter2"))
+				return err
+			},
+			wantKeys: []string{"storeName", "name", "value"},
+		},
 	}
 
 	for _, tt := range tests {
@@ -1163,6 +1184,13 @@ func TestContentTypeOnlyOnRequestsWithABody(t *testing.T) {
 			return err
 		}, "application/json"},
 		{"DeviceToken", func(c *Client) error { _, err := c.DeviceToken(ctx, "code"); return err }, "application/json"},
+		{"DeleteSecretStore", func(c *Client) error { return c.DeleteSecretStore(ctx, "app") }, ""},
+		{"DeleteSecret", func(c *Client) error { return c.DeleteSecret(ctx, "app", "db-password") }, ""},
+		{"RevealSecret", func(c *Client) error { _, err := c.RevealSecret(ctx, "app", "db-password"); return err }, ""},
+		{"UpdateSecretValue", func(c *Client) error {
+			_, err := c.UpdateSecretValue(ctx, "app", "db-password", NewValue("hunter3"))
+			return err
+		}, "application/json"},
 	}
 
 	for _, tt := range tests {

@@ -35,7 +35,7 @@ func (c *Client) do(req *http.Request, result any) error {
 
 	resp, err := c.HTTPClient.Do(req)
 	if err != nil {
-		return fmt.Errorf("executing request: %w", err)
+		return &APIError{Code: CodeUnavailable, Message: err.Error(), Err: err}
 	}
 	defer resp.Body.Close()
 
@@ -48,12 +48,12 @@ func (c *Client) do(req *http.Request, result any) error {
 		return fmt.Errorf("reading response: %w", err)
 	}
 
-	if resp.StatusCode == http.StatusNotFound {
-		return &NotFoundError{Resource: req.URL.Path}
-	}
-
 	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
-		return fmt.Errorf("API returned %d: %s", resp.StatusCode, string(body))
+		apiErr := newAPIError(resp.StatusCode, body)
+		if resp.StatusCode == http.StatusNotFound {
+			return &NotFoundError{Resource: req.URL.Path, API: apiErr}
+		}
+		return apiErr
 	}
 
 	if result != nil {
