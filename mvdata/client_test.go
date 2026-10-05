@@ -1119,7 +1119,7 @@ func TestCreateRequestsCarryOnlyAcceptedFields(t *testing.T) {
 					Name:           "app",
 					SecretCount:    2,
 					CreatedAt:      "2025-01-01T00:00:00Z",
-					LastModifiedBy: "someone",
+					LastModifiedBy: &Identity{Email: "someone@example.com"},
 				})
 				return err
 			},
