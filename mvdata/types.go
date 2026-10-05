@@ -163,7 +163,9 @@ type SecretStoreUpdate struct {
 }
 
 // Version changes on every write, so a caller compares it to detect a write it did not make.
-// SyncState is in-sync, missing or drifted.
+// SyncState says whether the store holds the value the console last wrote: in-sync; pending, not
+// written to the store yet; missing, gone from the store; or drifted, changed in the store by
+// something else since the console wrote it.
 type SecretMetadata struct {
 	StoreName      string    `json:"storeName"`
 	Name           string    `json:"name"`
