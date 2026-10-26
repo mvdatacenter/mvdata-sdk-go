@@ -12,6 +12,7 @@
 CLAUDE.md
 CODEX.md
 ANTIGRAVITY.md
-.claude/
+.claude/*
+!.claude/.public
 .codex/
 .agents/
