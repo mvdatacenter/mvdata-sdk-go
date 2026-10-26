@@ -12,6 +12,8 @@
 CLAUDE.md
 CODEX.md
 ANTIGRAVITY.md
+# Session state under .claude/ stays local, except the marker that tells the commit wrapper
+# this repository is public.
 .claude/*
 !.claude/.public
 .codex/
